@@ -65,14 +65,14 @@ class ShaderProgram {
 
     }
 
-    setNoise(amp: number, freq: number, speed: number) {
+    setNoise(amp: number, freq: number, speed: number) { // sets amp, freq, speed
         this.use();
         if (this.unifAmp !== -1) gl.uniform1f(this.unifAmp as WebGLUniformLocation, amp);
         if (this.unifFreq !== -1) gl.uniform1f(this.unifFreq as WebGLUniformLocation, freq);
         if (this.unifSpeed !== -1) gl.uniform1f(this.unifSpeed as WebGLUniformLocation, speed);
     }
 
-    setNoiseFrag(scale: number, strength: number, speed: number) {
+    setNoiseFrag(scale: number, strength: number, speed: number) { // sets attributes for perlin
         this.use();
         if (this.unifNoiseScale !== -1) gl.uniform1f(this.unifNoiseScale as WebGLUniformLocation, scale);
         if (this.unifNoiseStrength !== -1) gl.uniform1f(this.unifNoiseStrength as WebGLUniformLocation, strength);

@@ -87,6 +87,11 @@ function main() {
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/custom-frag.glsl'))
   ]);
 
+  const fireball = new ShaderProgram([
+    new Shader(gl.VERTEX_SHADER, require('./shaders/fireball-vert.glsl')),
+    new Shader(gl.FRAGMENT_SHADER, require('./shaders/fireball-frag.glsl'))
+  ]);
+
   let t0 = performance.now();
   // This function will be called every frame
     function tick() {
@@ -106,15 +111,22 @@ function main() {
     }
 
     lambert.setGeometryColor(hexToVec(controls.color));
+    fireball.setGeometryColor(hexToVec(controls.color));
     custom.setGeometryColor(hexToVec(controls.color));
+
     custom.setTime(tSec);
     custom.setNoise(0.25, 8.0, 2.0);
     custom.setNoiseFrag(2.5, 0.8, 2.0);
 
-    renderer.render(camera, custom, [
-      //icosphere,
+    fireball.setGeometryColor(hexToVec(controls.color));
+    fireball.setTime(tSec);
+    fireball.setNoise(0.2, 3.25, 0.2);
+    fireball.setNoiseFrag(1.5, 0.8, 2.0);
+
+    renderer.render(camera, fireball, [
+      icosphere
       //square,
-      cube
+      //cube
     ]);
     stats.end();
 
