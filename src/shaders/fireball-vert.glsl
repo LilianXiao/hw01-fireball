@@ -138,7 +138,7 @@ void main()
     // this applies the faster flame flickering effect near the top
     vec3 domain = nObj * u_Freq + vec3(0.0, u_Speed * 4.0 * u_Time, 0.0);
     domain = warp(domain, u_Time);
-    float dispHigh = u_Amp * top * fbm(domain) * 1.2;
+    float dispHigh = u_Amp * top * fbm(domain);
 
     // apply displacements to position
     // multiply in some triangle wave displacement to make flame keep a better shape

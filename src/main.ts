@@ -121,7 +121,7 @@ function main() {
     fireball.setGeometryColor(hexToVec(controls.color));
     fireball.setTime(tSec);
     fireball.setNoise(0.2, 3.25, 0.2);
-    fireball.setNoiseFrag(1.5, 0.8, 2.0);
+    fireball.setNoiseFrag(2.5, 0.8, 2.0);
 
     renderer.render(camera, fireball, [
       icosphere
