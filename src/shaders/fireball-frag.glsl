@@ -3,6 +3,8 @@
 precision highp float;
 
 uniform vec4 u_Color;
+uniform vec4 u_ColorGradient;
+uniform float u_UseGradient;
 uniform float u_Time;
 uniform float u_NoiseScale;
 uniform float u_NoiseStrength;
@@ -74,6 +76,7 @@ float fbm(vec3 p) {
         freq *= 2.0;
         amp *= 0.5;
     }
+
     return sum;
 }
 
@@ -92,7 +95,6 @@ void main()
 
     float lightIntensity = diffuseTerm + ambientTerm;
    
-
     vec3 p = fs_Col.xyz * u_NoiseScale + vec3(0.0, 0.0, u_Time * u_NoiseSpeed);
     float mask = 0.5 + 0.5 * fbm(p);
 
@@ -106,10 +108,11 @@ void main()
         vec3(0.0, 0.33, 0.67) // phasing
     );
 
-    vec3 base = albedo * (diffuseTerm + 0.2);
-
-    // I didn't implement subdivisions/tesselations for the cube so the effects
-    // might be a little less obvious; the vertex deform and color shifting are
-    // pretty visible with something like the icosphere lol
-    out_Col = vec4(clamp(base, 0.0, 1.0), u_Color.a);
+    if (u_UseGradient == 0.0) {
+        vec3 base = diffuseColor.rgb * (diffuseTerm + 0.2);
+        out_Col = vec4(base, u_Color.a);
+    } //else if (u_UseGradient == 1.0){
+        vec3 base = albedo * (diffuseTerm + 0.2);
+        out_Col = vec4(clamp(base, 0.0, 1.0), u_Color.a);
+    //}
 }
