@@ -15,8 +15,8 @@ const controls = {
   tesselations: 5,
   color: '#ff0000',
   colorGradient: '#fff000',
-  useRainbow: false,
-  useGradient: false, 
+  useRainbow: true,
+  setFreq: 2.25,
   'Load Scene': loadScene, // A function pointer, essentially
 };
 
@@ -62,7 +62,7 @@ function main() {
   gui.addColor(controls, 'color');
   gui.addColor(controls, 'colorGradient');
   gui.add(controls, 'useRainbow');
-  gui.add(controls, 'useGradient');
+  gui.add(controls, 'setFreq');
   gui.add(controls, 'Load Scene');
 
   // get canvas and webgl context
@@ -119,19 +119,24 @@ function main() {
 
     lambert.setGeometryColor(hexToVec(controls.color));
     custom.setGeometryColor(hexToVec(controls.color));
-
     fireball.setGeometryColor(hexToVec(controls.color));
+
+    if (controls.useRainbow == false) {
+        fireball.setUseRainbow(0.0);
+    } else {
+        fireball.setUseRainbow(1.0);
+    }
+
     fireball.setColorGradient(hexToVec(controls.colorGradient));
+    fireball.setFrequency(controls.setFreq);
 
     custom.setTime(tSec);
     custom.setNoise(0.25, 8.0, 2.0);
     custom.setNoiseFrag(2.5, 0.8, 2.0);
 
-    fireball.setGeometryColor(hexToVec(controls.color));
     fireball.setTime(tSec);
-    fireball.setNoise(0.2, 3.25, 0.2);
+    fireball.setNoise(0.16, controls.setFreq, 1.3);
     fireball.setNoiseFrag(2.5, 0.8, 2.0);
-    fireball.setUseGradient(1.0);
 
     renderer.render(camera, fireball, [
       icosphere

@@ -37,7 +37,7 @@ class ShaderProgram {
     unifNoiseStrength: WebGLUniformLocation;
     unifNoiseSpeed: WebGLUniformLocation;
     unifColorGradient: WebGLUniformLocation;
-    unifUseGradient: WebGLUniformLocation;
+    unifUseRainbow: WebGLUniformLocation;
 
     constructor(shaders: Array<Shader>) {
         this.prog = gl.createProgram();
@@ -65,12 +65,12 @@ class ShaderProgram {
         this.unifNoiseStrength = gl.getUniformLocation(this.prog, "u_NoiseStrength");
         this.unifNoiseSpeed = gl.getUniformLocation(this.prog, "u_NoiseSpeed");
         this.unifColorGradient = gl.getUniformLocation(this.prog, "u_ColorGradient");
-        this.unifUseGradient = gl.getUniformLocation(this.prog, "u_UseGradient");
+        this.unifUseRainbow = gl.getUniformLocation(this.prog, "u_UseRainbow");
     }
 
-    setUseGradient(useGradient: number) {
+    setUseRainbow(useRainbow: number) {
         this.use();
-        if (this.unifUseGradient !== -1) gl.uniform1i(this.unifUseGradient as WebGLUniformLocation, useGradient);
+        if (this.unifUseRainbow !== -1) gl.uniform1f(this.unifUseRainbow as WebGLUniformLocation, useRainbow);
     }
 
     setNoise(amp: number, freq: number, speed: number) { // sets amp, freq, speed
@@ -92,6 +92,11 @@ class ShaderProgram {
         if (this.unifColorGradient !== -1) {
             gl.uniform4fv(this.unifColorGradient, colorGradient);
         }
+    }
+
+    setFrequency(freq: number) {
+        this.use();
+        if (this.unifFreq !== -1) gl.uniform1f(this.unifFreq as WebGLUniformLocation, freq);
     }
 
     setTime(t: number) {

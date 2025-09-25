@@ -4,7 +4,7 @@ precision highp float;
 
 uniform vec4 u_Color;
 uniform vec4 u_ColorGradient;
-uniform float u_UseGradient;
+uniform float u_UseRainbow;
 uniform float u_Time;
 uniform float u_NoiseScale;
 uniform float u_NoiseStrength;
@@ -108,11 +108,11 @@ void main()
         vec3(0.0, 0.33, 0.67) // phasing
     );
 
-    if (u_UseGradient == 0.0) {
+    if (u_UseRainbow == 0.0) { // User can set gradient color
         vec3 base = diffuseColor.rgb * (diffuseTerm + 0.2);
         out_Col = vec4(base, u_Color.a);
-    } //else if (u_UseGradient == 1.0){
+    } else if (u_UseRainbow == 1.0) { // Yser can use epic rainbow
         vec3 base = albedo * (diffuseTerm + 0.2);
         out_Col = vec4(clamp(base, 0.0, 1.0), u_Color.a);
-    //}
+    }
 }
