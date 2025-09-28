@@ -172,11 +172,13 @@ function main() {
         controls.colorGradient = '#fff000';
         controls.useRainbow = false;
         controls.setFreq = 2.25;
+        controls.setOctaves = 5;
 
         this.setGeometryColor(hexToVec(controls.color));
         this.setUseRainbow(controls.useRainbow ? 1.0 : 0.0);
         this.setColorGradient(hexToVec(controls.colorGradient));
         this.setFrequency(controls.setFreq);
+        this.setOctaves(controls.setOctaves);
         this.setNoise(0.16, controls.setFreq, 1.3);
         this.setNoiseFrag(2.5, 0.8, 2.0);
     }
@@ -185,6 +187,7 @@ function main() {
     col2.updateDisplay();
     rb.updateDisplay();
     setf.updateDisplay();
+    setO.updateDisplay();
 
     controls.reset = useDefault;
 
