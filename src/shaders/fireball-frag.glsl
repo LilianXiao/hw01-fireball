@@ -96,22 +96,10 @@ void main()
     float lightIntensity = diffuseTerm + ambientTerm;
 
     if (u_UseRainbow == 0.0) { // User can set gradient color
-        float lowEdge = 0.2;
-        float upEdge = 0.85;
-        float sharpness = 1.2;
-
-        vec3 pos = fs_Col.xyz;
-        float r = max(length(pos), 0.00001);
-        float cap = pos.y / r;
-        float lat = 0.5 * (cap + 1.0);
-
-        float s = smoothstep(lowEdge, upEdge, lat);
-        s = pow(s, sharpness);
-
-        vec3 gradRGB = mix(u_Color.rgb, u_ColorGradient.rgb, s);
-
+        float displace = abs(sin(u_Time));
+        vec3 gradRGB = mix(u_Color.rgb, u_ColorGradient.rgb, displace);
         vec3 base = gradRGB * (diffuseTerm + 0.2);
-        out_Col = vec4(base, u_Color.a);
+        out_Col = vec4(base, 1.0);
     } else if (u_UseRainbow == 1.0) { // User can use rainbow
         vec3 p = fs_Col.xyz * u_NoiseScale + vec3(0.0, 0.0, u_Time * u_NoiseSpeed);
         float mask = 0.5 + 0.5 * fbm(p);
@@ -126,6 +114,6 @@ void main()
             vec3(0.0, 0.33, 0.67) // phasing
         );
         vec3 base = albedo * (diffuseTerm + 0.2);
-        out_Col = vec4(clamp(base, 0.0, 1.0), u_Color.a);
+        out_Col = vec4(clamp(base, 0.0, 1.0), 1.0);
     }
 }
