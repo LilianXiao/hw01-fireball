@@ -6,7 +6,6 @@ var activeProgram: WebGLProgram = null;
 
 export class Shader {
     shader: WebGLShader;
-
     constructor(type: number, source: string) {
         this.shader = gl.createShader(type);
         gl.shaderSource(this.shader, source);
@@ -73,6 +72,13 @@ class ShaderProgram {
         if (this.unifUseRainbow !== -1) gl.uniform1f(this.unifUseRainbow as WebGLUniformLocation, useRainbow);
     }
 
+    setColorGradient(colorGradient: vec4) {
+        this.use();
+        if (this.unifColorGradient !== -1) {
+            gl.uniform4fv(this.unifColorGradient, colorGradient);
+        }
+    }
+
     setNoise(amp: number, freq: number, speed: number) { // sets amp, freq, speed
         this.use();
         if (this.unifAmp !== -1) gl.uniform1f(this.unifAmp as WebGLUniformLocation, amp);
@@ -85,13 +91,6 @@ class ShaderProgram {
         if (this.unifNoiseScale !== -1) gl.uniform1f(this.unifNoiseScale as WebGLUniformLocation, scale);
         if (this.unifNoiseStrength !== -1) gl.uniform1f(this.unifNoiseStrength as WebGLUniformLocation, strength);
         if (this.unifNoiseSpeed !== -1) gl.uniform1f(this.unifNoiseSpeed as WebGLUniformLocation, speed);
-    }
-
-    setColorGradient(colorGradient: vec4) {
-        this.use();
-        if (this.unifColorGradient !== -1) {
-            gl.uniform4fv(this.unifColorGradient, colorGradient);
-        }
     }
 
     setFrequency(freq: number) {

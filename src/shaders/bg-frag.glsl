@@ -2,19 +2,14 @@
 
 precision highp float;
 
-uniform vec4 u_Color;
-uniform vec4 u_ColorGradient;
-uniform float u_UseRainbow;
 uniform float u_Time;
-uniform float u_NoiseScale;
-uniform float u_NoiseStrength;
-uniform float u_NoiseSpeed;
 
-in vec4 fs_Nor;
-in vec4 fs_LightVec;
-in vec4 fs_Col;
+uniform vec4 u_Color;
+
+in vec2 vUV;
 
 out vec4 out_Col;
+
 
 // noise generator helper func
 vec3 noise(vec3 p) {
@@ -80,52 +75,8 @@ float fbm(vec3 p) {
     return sum;
 }
 
-// this will induce the rainbow color shifting
-vec3 rainbow(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
-    return a + b * cos(6.28318531 * (c * t + d));
-}
 
 void main()
 {
-    vec4 diffuseColor = u_Color;
-
-    float diffuseTerm = dot(normalize(fs_Nor), normalize(fs_LightVec));
-
-    float ambientTerm = 0.2;
-
-    float lightIntensity = diffuseTerm + ambientTerm;
-
-    if (u_UseRainbow == 0.0) { // User can set gradient color
-        float lowEdge = 0.2;
-        float upEdge = 0.85;
-        float sharpness = 1.2;
-
-        vec3 pos = fs_Col.xyz;
-        float r = max(length(pos), 0.00001);
-        float cap = pos.y / r;
-        float lat = 0.5 * (cap + 1.0);
-
-        float s = smoothstep(lowEdge, upEdge, lat);
-        s = pow(s, sharpness);
-
-        vec3 gradRGB = mix(u_Color.rgb, u_ColorGradient.rgb, s);
-
-        vec3 base = gradRGB * (diffuseTerm + 0.2);
-        out_Col = vec4(base, u_Color.a);
-    } else if (u_UseRainbow == 1.0) { // User can use rainbow
-        vec3 p = fs_Col.xyz * u_NoiseScale + vec3(0.0, 0.0, u_Time * u_NoiseSpeed);
-        float mask = 0.5 + 0.5 * fbm(p);
-
-        float t = fract(mask + 0.2 * u_Time);
-
-        vec3 albedo = rainbow(
-            t,
-            vec3(0.5, 0.5, 0.5),
-            vec3(0.4, 0.4, 0.4),  // amp
-            vec3(1.1, 1.1, 1.1),  // freq
-            vec3(0.0, 0.33, 0.67) // phasing
-        );
-        vec3 base = albedo * (diffuseTerm + 0.2);
-        out_Col = vec4(clamp(base, 0.0, 1.0), u_Color.a);
-    }
+    vec2 uv = vUV * 2.0 - 1.0;
 }

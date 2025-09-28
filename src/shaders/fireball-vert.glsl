@@ -110,7 +110,6 @@ float triangle_wave(float x, float freq, float amp) {
     return abs(mod((x * freq), amp) - (0.5 * amp));
 }
 
-
 void main()
 {
     fs_Col = vs_Col;

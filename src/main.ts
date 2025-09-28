@@ -15,8 +15,9 @@ const controls = {
   tesselations: 5,
   color: '#ff0000',
   colorGradient: '#fff000',
-  useRainbow: true,
+  useRainbow: false, 
   setFreq: 2.25,
+  reset: () => {}, 
   'Load Scene': loadScene, // A function pointer, essentially
 };
 
@@ -24,6 +25,8 @@ let icosphere: Icosphere;
 let square: Square;
 let cube: Cube;
 let prevTesselations: number = 5;
+let sceneReady = false;
+// this is used by useDefault so nothing breaks before scene is loaded
 
 function loadScene() {
   icosphere = new Icosphere(vec3.fromValues(0, 0, 0), 1, controls.tesselations);
@@ -56,13 +59,14 @@ function main() {
 
   // Add controls to the gui
   const gui = new DAT.GUI();
-  gui.add(controls, 'tesselations', 0, 8).step(1);
+  const tess = gui.add(controls, 'tesselations', 0, 8).step(1);
   // add a color picker
   // additionally add a second color for gradient option
-  gui.addColor(controls, 'color');
-  gui.addColor(controls, 'colorGradient');
-  gui.add(controls, 'useRainbow');
-  gui.add(controls, 'setFreq');
+  const col1 = gui.addColor(controls, 'color');
+  const col2 = gui.addColor(controls, 'colorGradient');
+  const rb = gui.add(controls, 'useRainbow');
+  const setf = gui.add(controls, 'setFreq');
+  gui.add(controls, 'reset');
   gui.add(controls, 'Load Scene');
 
   // get canvas and webgl context
@@ -119,16 +123,16 @@ function main() {
 
     lambert.setGeometryColor(hexToVec(controls.color));
     custom.setGeometryColor(hexToVec(controls.color));
+
     fireball.setGeometryColor(hexToVec(controls.color));
+    fireball.setColorGradient(hexToVec(controls.colorGradient));
+    fireball.setFrequency(controls.setFreq);
 
     if (controls.useRainbow == false) {
         fireball.setUseRainbow(0.0);
     } else {
         fireball.setUseRainbow(1.0);
     }
-
-    fireball.setColorGradient(hexToVec(controls.colorGradient));
-    fireball.setFrequency(controls.setFreq);
 
     custom.setTime(tSec);
     custom.setNoise(0.25, 8.0, 2.0);
@@ -137,6 +141,29 @@ function main() {
     fireball.setTime(tSec);
     fireball.setNoise(0.16, controls.setFreq, 1.3);
     fireball.setNoiseFrag(2.5, 0.8, 2.0);
+
+    // Reset button function
+    const useDefault = () => {
+        controls.tesselations = 5;
+        controls.color = '#ff0000';
+        controls.colorGradient = '#fff000';
+        controls.useRainbow = false;
+        controls.setFreq = 2.25;
+
+        this.setGeometryColor(hexToVec(controls.color));
+        this.setUseRainbow(controls.useRainbow ? 1.0 : 0.0);
+        this.setColorGradient(hexToVec(controls.colorGradient));
+        this.setFrequency(controls.setFreq);
+        this.setNoise(0.16, controls.setFreq, 1.3);
+        this.setNoiseFrag(2.5, 0.8, 2.0);
+    }
+    tess.updateDisplay();
+    col1.updateDisplay();
+    col2.updateDisplay();
+    rb.updateDisplay();
+    setf.updateDisplay();
+
+    controls.reset = useDefault;
 
     renderer.render(camera, fireball, [
       icosphere
@@ -147,7 +174,7 @@ function main() {
 
     // Tell the browser to call `tick` again whenever it renders a new frame
     requestAnimationFrame(tick);
-  }
+    }
 
   window.addEventListener('resize', function() {
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -158,6 +185,8 @@ function main() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.setAspectRatio(window.innerWidth / window.innerHeight);
   camera.updateProjectionMatrix();
+
+  sceneReady = true;
 
   // Start the render loop
   tick();
