@@ -49,6 +49,19 @@ function hexToVec(c: any): vec4 {
 }
 
 function main() {
+   window.addEventListener('keypress', function (e) {
+       // console.log(e.key);
+       switch (e.key) {
+           // Use this if you wish
+       }
+   }, false);
+
+   window.addEventListener('keyup', function (e) {
+       switch (e.key) {
+           // Use this if you wish
+       }
+   }, false);
+
   // Initial display for framerate
   const stats = Stats();
   stats.setMode(0);
@@ -84,10 +97,6 @@ function main() {
 
   const camera = new Camera(vec3.fromValues(0, 0, 5), vec3.fromValues(0, 0, 0));
 
-  const renderer = new OpenGLRenderer(canvas);
-  renderer.setClearColor(0.2, 0.2, 0.2, 1);
-  gl.enable(gl.DEPTH_TEST);
-
   const lambert = new ShaderProgram([
     new Shader(gl.VERTEX_SHADER, require('./shaders/lambert-vert.glsl')),
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/lambert-frag.glsl')),
@@ -102,6 +111,16 @@ function main() {
     new Shader(gl.VERTEX_SHADER, require('./shaders/fireball-vert.glsl')),
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/fireball-frag.glsl'))
   ]);
+
+  // gonna try and get this to work later
+  //const flat = new ShaderProgram([
+  //  new Shader(gl.VERTEX_SHADER, require('./shaders/flat-vert.glsl')),
+  //  new Shader(gl.FRAGMENT_SHADER, require('./shaders/flat-frag.glsl')),
+  //]);
+
+  const renderer = new OpenGLRenderer(canvas);
+  renderer.setClearColor(0.0, 0.0, 0.0, 1);
+  gl.enable(gl.DEPTH_TEST);
 
   let t0 = performance.now();
   // This function will be called every frame
@@ -123,6 +142,7 @@ function main() {
 
     lambert.setGeometryColor(hexToVec(controls.color));
     custom.setGeometryColor(hexToVec(controls.color));
+    // flat.setTime(tSec);
 
     fireball.setGeometryColor(hexToVec(controls.color));
     fireball.setColorGradient(hexToVec(controls.colorGradient));

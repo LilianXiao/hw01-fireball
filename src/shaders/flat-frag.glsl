@@ -1,14 +1,12 @@
 #version 300 es
-
 precision highp float;
 
+uniform vec3 u_Eye, u_Ref, u_Up;
+uniform vec2 u_Dimensions;
 uniform float u_Time;
-uniform vec2 u_Resolution;
 
-in vec2 vUV;
-
+in vec2 fs_Pos;
 out vec4 out_Col;
-
 
 // noise generator helper func
 vec3 noise(vec2 p) {
@@ -49,27 +47,19 @@ float fbm(vec2 p) {
     return s;
 }
 
+void main() {
+  //out_Col = vec4(0.5 * (fs_Pos + vec2(1.0)), 0.5 * (sin(u_Time * 3.14159 * 0.01) + 1.0), 1.0);
+  vec2 uv = fs_Pos * 5.0;
+  vec2 wave = vec2(0.5 * u_Time, -0.5 * u_Time);
+  uv = uv + wave;
 
-void main()
-{
-    vec2 uv = vUV * 2.0 - 1.0;
-    uv.x *= u_Resolution.x / u_Resolution.y;
+  float f = fbm(uv);
+  f = 0.5 + 0.5 * f;
 
-    float t = u_Time * 3.0;
-    vec2 p = uv * 3.0 + vec2(0.0, t);
+  vec3 colA = (0.5, 0.5, 0.5);
+  vec3 colB = (0.2, 0.2, 0.2);
 
-    vec2 q = vec2(fbm(p + vec2(0.0, 0.0)),
-                  fbm(p + vec2(4.0, 2.0)));
-    vec2 r = vec2(fbm(p + 1.1 * q + vec2(2.0, 5.0)),
-                  fbm(p + 1.1 * q + vec2(7.0, 3.0)));
-
-    float f = fbm(p + 0.75 * r);
-    f = 0.5 + 0.5 * f;
-
-    vec3 colA = (0.5, 0.5, 0.5);
-    vec3 colB = (0.2, 0.2, 0.2);
-
-    vec3 col = mix(colA, colB, f);
+  vec3 col = mix(colA, colB, f);
     
-    out_Col = vec4(col, 1.0);
+  out_Col = vec4(col, 1.0);
 }
