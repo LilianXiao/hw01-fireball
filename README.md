@@ -1,5 +1,19 @@
 # [Project 1: Noise](https://github.com/CIS-566-Fall-2022/hw01-fireball-base)
 
+**Some Shader Notes:**
+*Adapted from my hw0 custom shader to use perlin and fbm noise for the fireball frag + vertex shaders
+*Additionally added a trig warp func and triangle wave func to vertex shader to adjust fire shape
+*Decided to use low + high frequency to control the fireball (low controls the general "wobble" while high controls the "flame agitation")
+*displaced using the aforementioned triangle wave to help solidify the shape
+*note here: originally the fireball was deforming all around the mesh so I created a shape mask that could keep the bottom of the icosphere round (the flames will only come out of the top)
+*Stuff like frequency and fbm octaves I ended up also putting into the controls!
+*In frag shader: one can control the dual colors and "normal" mode will mix the two together using sin of time elapsed (something cool I noticed was how it would shift into inverse colors if I didn't clamp the sin, but I decided to keep it in abs regardless lol)
+
+**Controls**
+I wanted the user to be able to switch between rainbow mode and a normal bicolor shifting mode, so I created an on/off button
+Some trouble I initially ran into was not being aware how to properly initialize everything regarding the gui so at times I'd forget to actually add a control, or neglect to set the actual uniform in shaderprogram, resulting in some small but solvable moments of frustration haha...
+
+
 ## Objective
 
 Get comfortable with using WebGL and its shaders to generate an interesting 3D, continuous surface using a multi-octave noise algorithm.
