@@ -10,8 +10,10 @@
 - In frag shader: one can control the dual colors and "normal" mode will mix the two together using sin of time elapsed (something cool I noticed was how it would shift into inverse colors if I didn't clamp the sin, but I decided to keep it in abs regardless lol)
 
 **Controls:**
-I wanted the user to be able to switch between rainbow mode and a normal bicolor shifting mode, so I created an on/off button
-Some trouble I initially ran into was not being aware how to properly initialize everything regarding the gui so at times I'd forget to actually add a control, or neglect to set the actual uniform in shaderprogram, resulting in some small but solvable moments of frustration haha...
+I wanted the user to be able to switch between rainbow mode and a normal bicolor shifting mode, so I created an on/off button.  Some trouble I initially ran into was not being aware how to properly initialize everything regarding the gui so at times I'd forget to actually add a control, or neglect to set the actual uniform in shaderprogram, resulting in some small but solvable moments of frustration haha...
+
+**Other stuff:**
+Later when I come back to this assignment, I think I'll try adding a background and some extra post processing to make it look more stylized/papery.  I'd forgotten that there was a base flat shader template given because I had substituted the entire base project with my hw0 initially, so I'll probably try that out.
 
 
 ## Objective
