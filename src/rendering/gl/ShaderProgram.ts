@@ -40,6 +40,7 @@ class ShaderProgram {
     unifNoiseScale: WebGLUniformLocation;
     unifNoiseStrength: WebGLUniformLocation;
     unifNoiseSpeed: WebGLUniformLocation;
+    unifOctaves: WebGLUniformLocation;
     unifColorGradient: WebGLUniformLocation;
     unifUseRainbow: WebGLUniformLocation;
     unifResolution: WebGLUniformLocation;
@@ -76,6 +77,8 @@ class ShaderProgram {
         this.unifNoiseStrength = gl.getUniformLocation(this.prog, "u_NoiseStrength");
         this.unifNoiseSpeed = gl.getUniformLocation(this.prog, "u_NoiseSpeed");
         this.unifColorGradient = gl.getUniformLocation(this.prog, "u_ColorGradient");
+        this.unifOctaves = gl.getUniformLocation(this.prog, "u_Octaves");
+
         this.unifUseRainbow = gl.getUniformLocation(this.prog, "u_UseRainbow");
         this.unifResolution = gl.getUniformLocation(this.prog, "u_Resolution");
     }
@@ -124,6 +127,11 @@ class ShaderProgram {
         if (this.unifNoiseScale !== -1) gl.uniform1f(this.unifNoiseScale as WebGLUniformLocation, scale);
         if (this.unifNoiseStrength !== -1) gl.uniform1f(this.unifNoiseStrength as WebGLUniformLocation, strength);
         if (this.unifNoiseSpeed !== -1) gl.uniform1f(this.unifNoiseSpeed as WebGLUniformLocation, speed);
+    }
+
+    setOctaves(octaves: number) {
+        this.use();
+        if (this.unifOctaves !== -1) gl.uniform1f(this.unifOctaves, octaves);
     }
 
     setFrequency(freq: number) {

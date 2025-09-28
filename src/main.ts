@@ -15,8 +15,9 @@ const controls = {
   tesselations: 5,
   color: '#ff0000',
   colorGradient: '#fff000',
-  useRainbow: false, 
-  setFreq: 2.25,
+  setFreq: 2.25, 
+  setOctaves: 5, 
+  useRainbow: false,
   reset: () => {}, 
   'Load Scene': loadScene, // A function pointer, essentially
 };
@@ -77,8 +78,9 @@ function main() {
   // additionally add a second color for gradient option
   const col1 = gui.addColor(controls, 'color');
   const col2 = gui.addColor(controls, 'colorGradient');
-  const rb = gui.add(controls, 'useRainbow');
   const setf = gui.add(controls, 'setFreq');
+  const setO = gui.add(controls, 'setOctaves');
+  const rb = gui.add(controls, 'useRainbow');
   gui.add(controls, 'reset');
   gui.add(controls, 'Load Scene');
 
@@ -147,6 +149,7 @@ function main() {
     fireball.setGeometryColor(hexToVec(controls.color));
     fireball.setColorGradient(hexToVec(controls.colorGradient));
     fireball.setFrequency(controls.setFreq);
+    fireball.setOctaves(controls.setOctaves);
 
     if (controls.useRainbow == false) {
         fireball.setUseRainbow(0.0);

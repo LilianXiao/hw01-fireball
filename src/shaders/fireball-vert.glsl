@@ -9,6 +9,7 @@ uniform float u_Time;
 uniform float u_Amp;
 uniform float u_Freq;
 uniform float u_Speed;
+uniform float u_Octaves;
 
 
 in vec4 vs_Pos;
